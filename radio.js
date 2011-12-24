@@ -101,7 +101,7 @@
 	};
 	
 	/**
-	 * Wrapper for radio
+	 * Wrapper for radio._
 	 */
 	function radio(channelName) {
 		radio._.channel(channelName);
