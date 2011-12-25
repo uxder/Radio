@@ -56,12 +56,10 @@
 					sn = this.channelName,
 					l= a.length,
 					c;
-				//if new channel register it
-				if (!s[sn]) s[sn] = [] ;
-				var c = s[sn];
-				//run through the arguments 
+				//if this channel exists save it to c, if it doesn't, create a new channel and save it to var c.
+				c = s[sn] || (s[sn] = []);
+				//run through the arguments and add listeners
 				for(i=0; i<l;i++) {
-					//add listener
 					c.push(a[i]);
 				}
 				return this;
