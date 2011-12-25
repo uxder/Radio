@@ -52,15 +52,15 @@
 		add: function() {
 				var a = arguments,
 					s = this.channels,
-					i, 
 					sn = this.channelName,
+					c = s[sn],
 					l= a.length;
 				//if new channel register it
-				if (!s[sn]) s[sn] = [];
+				if (!c) c = [];
 				//run through the arguments 
-				for(i=0; i<l;i++) {
+				for(var i=0; i<l;i++) {
 					//add listener
-					s[sn].push(a[i]);
+					c.push(a[i]);
 				}
 				return this;
 		},
@@ -73,7 +73,7 @@
 				i, 
 				l= a.length;
 			//run through the arguments 
-			for(i=0; i<l;i++) {
+			for(i=l; i--;) {
 				this._removeOne(a[i]);
 			}
 			return this;
