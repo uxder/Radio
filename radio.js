@@ -119,6 +119,7 @@
 				c = this.channels[this.channelName],
 				l= c.length;
 			
+			//is this an expensive way to match and can?  perhaps use another method like .search in array.
 			for(i=0; i<l;i++) {
 				if(c[i] === func) c.splice(i,1);
 			}
