@@ -49,8 +49,10 @@
 		},
 		
 		/**
-		 * Set the current channel name
-		 */
+		 * Set the current channel/event name
+		 * @param[string] name the name of the channel
+		 * @return[this] returns self for chaining
+ 		 */
 		channel: function(name) {
 			this.channelName = name;
 			return this;
@@ -59,7 +61,7 @@
 		/**
 		 * Add Listener to channel (subscribe)
 		 * Take the arguments and add it to the this.channels array.
-		 * @param[callback|array] callback list of callbacks separated by commas
+		 * @param[callback|array] arguments list of callbacks or arrays[callback, context] separated by commas
 		 * @return [this] this returns self for chaining
 		 * @example
 		 *		//basic usage		
@@ -86,8 +88,18 @@
 		},
 		
 		/**
-		 * Remove Listeners from channel (unsubscribe)
-		 */
+		 * Remove Listener from channel (subscribe)
+		 * Take the arguments and add it to the this.channels array.
+		 * @param[callback|array] callback list of callbacks separated by commas
+		 * @return [this] this returns self for chaining
+		 * @example
+		 *		//basic usage		
+		 *		radio('channel1').remove(callback); //will remove callback from channel1
+		 *		radio('channel1').remove(callback, callback2, callback3 ...); //you can remove as many callbacks as you want
+		 * 	    
+		 *		//callbacks with context
+		 *  	radio('channel1').add([callback, context]).remove(callback); //just remove the callback
+ 		 */
 		remove: function() {
 			var a = arguments,
 				i, 
@@ -103,20 +115,19 @@
 		 * Remove one listener from channel
 		 */
 		_removeOne: function(func) {
-			var s = this.channels,
-				sn = this.channelName,
-				i, 
-				l= s[sn].length;
+			var i, 
+				c = this.channels[this.channelName],
+				l= c.length;
 			
 			for(i=0; i<l;i++) {
-				if(s[sn][i] === func) s[sn].splice(i,1);
+				if(c[i] === func) c.splice(i,1);
 			}
 		},
 		/**
-		 * return Array of all channels and listeners
+		 * return Array of all listeners in the current channel
 		 */
 		all: function(){
-			return this.channels;
+			return this.channels[this.channeName];
 		}
 	};
 	
