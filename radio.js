@@ -5,7 +5,7 @@
 
 (function(global) {
 	"use strict";
-	
+
 	radio._ = {
 		version: '0.0.1',
 		channelName: "",
@@ -22,47 +22,41 @@
 		 * 		  radio('channel2').broadcast(param1, param2, param3 ... ); 		  
 		 */
 		broadcast: function() {
-			var		i,
-					c = this.channels[this.channelName],
-					l = c.length,
-					listener,
-					callback,
-					context;
+			var i, c = this.channels[this.channelName],
+				l = c.length,
+				listener, callback, context;
 			//iterate through this channel and run each listener
-			for(i=0; i<l;i++) {
+			for (i = 0; i < l; i++) {
 				//save the current listener into local var for performance
 				listener = c[i];
-				
+
 				//if listener was an array, set the callback and context.
-				if( (typeof(listener) === 'object') && (listener.length) ) {
+				if ((typeof(listener) === 'object') && (listener.length)) {
 					callback = listener[0];
 					//if user sent it without a context, set the context to the function
 					context = (listener[1]) ? listener[1] : window;
 				}
-				//if listener was a function, just set the callback and context to that function
-				//if(typeof(listener) == "function") callback = context = listener;
-				
 				//run the listener
 				callback.apply(context, arguments);
 			}
 			return this;
 		},
-		
+
 		/**
 		 * Create the channel if it doesn't exist and set the current channel/event name
 		 * @param[string] name the name of the channel
 		 * @return[this] returns self for chaining
 		 * @example
 		 * 		radio('channel1');
- 		 */
+		 */
 		channel: function(name) {
 			var c = this.channels;
 			//create a new channel if it doesn't exists
-			if(!(c[name])) c[name] = [];		
+			if (! (c[name])) c[name] = [];
 			this.channelName = name;
 			return this;
 		},
-		
+
 		/**
 		 * Add Listener to channel (subscribe)
 		 * Take the arguments and add it to the this.channels array.
@@ -77,26 +71,25 @@
 		 * 	    
 		 *		//adding callbacks with context
 		 *  	radio('channel1').add([callback, context],[callback1, context], callback3);
- 		 */
+		 */
 		add: function() {
-				var a = arguments,
-					c = this.channels,
-					cn = this.channelName,
-					i, 
-					l= a.length,
-					channel;
-					
-				//run through each arguments and add it to the channel
-				for(i=0; i<l;i++) {
-					var p, ai = a[i];
-					//add accepts either an array (fucntion, context) or just the function.
-					//if the user send just a function, wrap the fucntion in an array [function]
-					p = (typeof(ai) === "function") ? [ai] : ai;
-					if( (typeof(p) === 'object') && (p.length) ) c[cn].push(p);
-				}
-				return this;
+			var a = arguments,
+				c = this.channels,
+				cn = this.channelName,
+				i, l = a.length,
+				channel;
+
+			//run through each arguments and add it to the channel
+			for (i = 0; i < l; i++) {
+				var p, ai = a[i];
+				//add accepts either an array (fucntion, context) or just the function.
+				//if the user send just a function, wrap the fucntion in an array [function]
+				p = (typeof(ai) === "function") ? [ai] : ai;
+				if ((typeof(p) === 'object') && (p.length)) c[cn].push(p);
+			}
+			return this;
 		},
-		
+
 		/**
 		 * Remove Listener from channel (subscribe)
 		 * Take the arguments and add it to the this.channels array.
@@ -109,32 +102,31 @@
 		 * 	    
 		 *		//callbacks with context
 		 *  	radio('channel1').add([callback, context]).remove(callback); //just remove the callback
- 		 */
+		 */
 		remove: function() {
-			var a = arguments, i, j,
-				c = this.channels[this.channelName],
-				l= a.length,
+			var a = arguments,
+				i, j, c = this.channels[this.channelName],
+				l = a.length,
 				cl = c.length,
-				offset = 0, jo;
+				offset = 0,
+				jo;
 			//loop through each argument 
-			for(i=0; i<l;i++) {
+			for (i = 0; i < l; i++) {
 				offset = 0;
 				//loop through the channel
-				for(j=0; j<cl;j++) {
-					
+				for (j = 0; j < cl; j++) {
 					jo = j - offset;
 					//if there is a match with the argument and the channel function remove it from the channel array
-					if(c[jo][0] === a[i]) {
-						c.splice(jo,1);
+					if (c[jo][0] === a[i]) {
+						c.splice(jo, 1);
 						offset++;
 					}
-					
 				}
 			}
 			return this;
 		}
 	};
-	
+
 	/**
 	 * Main Wrapper for radio._ and create a function radio to accept the channelName
 	 */
@@ -142,7 +134,7 @@
 		radio._.channel(channelName);
 		return radio._;
 	}
-	
+
 	//add radio to window object
 	(global.radio) ? global.radio : global.radio = radio;
 })(window);
