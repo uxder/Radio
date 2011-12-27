@@ -44,6 +44,10 @@ describe("Radio Core Test", function() {
 				expect(radio._.channels.channel1.length).toBe(2);
 				expect(radio._.channels.channel2.length).toBe(1);
 		    });
+			it("should create a new channel if it doesn't exists", function() {
+
+			});
+
 	  });
 	
 	
@@ -94,14 +98,7 @@ describe("Radio Core Test", function() {
 					});
 	  });
 	
-	describe("radio.channel method", function() {
-					it("should create a new channel if it doesn't exists", function() {
 
-					});
-					it("should set the internal radio channel name", function() {
-
-					});
-	  });
 	
 	afterEach(function() {
 		//clear out the channels.

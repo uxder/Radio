@@ -1,6 +1,15 @@
 /** 
  * Author: Scott Murphy twitter: @hellocreation, github: uxder
  * radio.js - The Chainable, Dependency Free Publish/Subscribe for Javascript
+
+
+ToDo:
+	- create more tests
+	- change out the add method so that you never add a fnction..I'm always adding an array
+	- change out for loops for native array filter, search methods.
+	- test benchmarks.
+
+
  */
 
 (function(global) {
@@ -37,10 +46,10 @@
 				if( (typeof(listener) === 'object') && (listener.length) ) {
 					callback = listener[0];
 					//if user sent it without a context, set the context to the function
-					context = (listener[1]) ? listener[1] : listener[0];
+					context = (listener[1]) ? listener[1] : window;
 				}
 				//if listener was a function, just set the callback and context to that function
-				if(typeof(listener) == "function") callback = context = listener;
+				//if(typeof(listener) == "function") callback = context = listener;
 				
 				//run the listener
 				callback.apply(context, [arguments].splice(i,1));
@@ -86,12 +95,13 @@
 					l= a.length,
 					channel;
 					
-				//grab the current channel or create and save a new one as an array
-				//channel = c[cn] || (c[cn] = []);
-				
 				//run through each arguments and add it to the channel
 				for(i=0; i<l;i++) {
-					c[cn].push(a[i]);
+					var p;
+					//add accepts either an array (fucntion, context) or just the function.
+					//if the user send just a function, wrap the fucntion in an array [function]
+					p = (typeof(a[i]) == "function") ? [a[i]] : a[i];
+					if( (typeof(p) === 'object') && (p.length) ) c[cn].push(p);
 				}
 				return this;
 		},
@@ -127,11 +137,12 @@
 			var i, 
 				c = this.channels[this.channelName],
 				l= c.length;
-			
 			//is this an expensive way to match and can?  perhaps use another method like .search in array.
 			for(i=0; i<l;i++) {
-				//potential bug.  I think we need to check for array and function because the argument passed is just the name of the callback
-				if(c[i] === func) c.splice(i,1);
+				if(c[i][0] === func) {
+					c.splice(i,1);
+					break;
+				}
 			}
 		},
 		/**
