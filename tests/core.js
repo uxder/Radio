@@ -102,6 +102,12 @@ describe("Radio Core Test", function() {
 						 radio('channel1').remove(f);
 						 expect(radio._.channels.channel1.length).toBe(2);
 					});
+					it("should remove duplicate listeners from a channel", function() {
+							 radio('channel1').add(f,f,f);
+							 expect(radio._.channels.channel1.length).toBe(3);
+							 radio('channel1').remove(f);
+							 expect(radio._.channels.channel1.length).toBe(0);
+					});
 					it("should remove listeners add with context from channel", function() {
 						 radio('channel1').add([test.selfTest, test], f);
 						 expect(radio._.channels.channel1.length).toBe(2);
@@ -123,9 +129,6 @@ describe("Radio Core Test", function() {
 						radio('channel1').broadcast('test');
 						expect(test.selfTest).toHaveBeenCalled();
 						expect(test.add).toHaveBeenCalled();	
-					});
-					it("should not fail even if the channel has never been created", function() {
-					
 					});
 	  });
 	

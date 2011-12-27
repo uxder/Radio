@@ -100,7 +100,7 @@ ToDo:
 					var p, ai = a[i];
 					//add accepts either an array (fucntion, context) or just the function.
 					//if the user send just a function, wrap the fucntion in an array [function]
-					p = (typeof(ai) == "function") ? [ai] : ai;
+					p = (typeof(ai) === "function") ? [ai] : ai;
 					if( (typeof(p) === 'object') && (p.length) ) c[cn].push(p);
 				}
 				return this;
@@ -120,30 +120,27 @@ ToDo:
 		 *  	radio('channel1').add([callback, context]).remove(callback); //just remove the callback
  		 */
 		remove: function() {
-			var a = arguments,
-				i, j,
+			var a = arguments, i, j,
 				c = this.channels[this.channelName],
 				l= a.length,
-				cl = c.length;
-			//run through the arguments 
+				cl = c.length,
+				offset = 0, jo;
+			//loop through each argument 
 			for(i=0; i<l;i++) {
-			
+				offset = 0;
+				//loop through the channel
 				for(j=0; j<cl;j++) {
-					if(c[j][0] === a[i]) {
-						c.splice(j,1);
-						break;
+					
+					jo = j - offset;
+					//if there is a match with the argument and the channel function remove it from the channel array
+					if(c[jo][0] === a[i]) {
+						c.splice(jo,1);
+						offset++;
 					}
+					
 				}
 			}
 			return this;
-		},
-	
-
-		/**
-		 * return Array of all listeners in the current channel
-		 */
-		all: function(){
-			return this.channels[this.channeName];
 		}
 	};
 	
