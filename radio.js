@@ -1,15 +1,6 @@
 /** 
  * Author: Scott Murphy twitter: @hellocreation, github: uxder
  * radio.js - The Chainable, Dependency Free Publish/Subscribe for Javascript
-
-
-ToDo:
-	- create more tests
-	- change out the add method so that you never add a fnction..I'm always adding an array
-	- change out for loops for native array filter, search methods.
-	- test benchmarks.
-
-
  */
 
 (function(global) {
@@ -52,7 +43,7 @@ ToDo:
 				//if(typeof(listener) == "function") callback = context = listener;
 				
 				//run the listener
-				callback.apply(context, [arguments].splice(i,1));
+				callback.apply(context, arguments);
 			}
 			return this;
 		},
