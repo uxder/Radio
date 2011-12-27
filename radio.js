@@ -75,18 +75,16 @@
 		 */
 		add: function() {
 			var a = arguments,
-				c = this.channels,
-				cn = this.channelName,
-				i, l = a.length,
-				channel;
+				c = this.channels[this.channelName],
+				i, l = a.length, p, ai = [];
 
 			//run through each arguments and add it to the channel
 			for (i = 0; i < l; i++) {
-				var p, ai = a[i];
+				ai = a[i];
 				//add accepts either an array (fucntion, context) or just the function.
 				//if the user send just a function, wrap the fucntion in an array [function]
 				p = (typeof(ai) === "function") ? [ai] : ai;
-				if ((typeof(p) === 'object') && (p.length)) c[cn].push(p);
+				if ((typeof(p) === 'object') && (p.length)) c.push(p);
 			}
 			return this;
 		},
