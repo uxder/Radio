@@ -97,10 +97,10 @@ ToDo:
 					
 				//run through each arguments and add it to the channel
 				for(i=0; i<l;i++) {
-					var p;
+					var p, ai = a[i];
 					//add accepts either an array (fucntion, context) or just the function.
 					//if the user send just a function, wrap the fucntion in an array [function]
-					p = (typeof(a[i]) == "function") ? [a[i]] : a[i];
+					p = (typeof(ai) == "function") ? [ai] : ai;
 					if( (typeof(p) === 'object') && (p.length) ) c[cn].push(p);
 				}
 				return this;
@@ -121,30 +121,24 @@ ToDo:
  		 */
 		remove: function() {
 			var a = arguments,
-				i, 
-				l= a.length;
+				i, j,
+				c = this.channels[this.channelName],
+				l= a.length,
+				cl = c.length;
 			//run through the arguments 
 			for(i=0; i<l;i++) {
-				this._removeOne(a[i]);
+			
+				for(j=0; j<cl;j++) {
+					if(c[j][0] === a[i]) {
+						c.splice(j,1);
+						break;
+					}
+				}
 			}
 			return this;
 		},
 	
-		/**
-		 * Remove one listener from channel
-		 */
-		_removeOne: function(func) {
-			var i, 
-				c = this.channels[this.channelName],
-				l= c.length;
-			//is this an expensive way to match and can?  perhaps use another method like .search in array.
-			for(i=0; i<l;i++) {
-				if(c[i][0] === func) {
-					c.splice(i,1);
-					break;
-				}
-			}
-		},
+
 		/**
 		 * return Array of all listeners in the current channel
 		 */
