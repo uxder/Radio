@@ -106,10 +106,20 @@ describe("Radio Core Test", function() {
 						 expect(radio._.channels.channel1.length).toBe(2);
 					});
 					it("should remove duplicate listeners from a channel", function() {
+							//check 1
 							 radio('channel1').add(f,f,f);
 							 expect(radio._.channels.channel1.length).toBe(3);
 							 radio('channel1').remove(f);
 							 expect(radio._.channels.channel1.length).toBe(0);
+							//check2 
+							 radio('channel1').add(f,f,f, f2, f3, [test.selfTest, test], test.selfTest);
+							 expect(radio._.channels.channel1.length).toBe(7);
+							 radio('channel1').remove(f);
+							 expect(radio._.channels.channel1.length).toBe(4);
+							 radio('channel1').remove(test.selfTest);
+							 expect(radio._.channels.channel1.length).toBe(2);
+							 radio('channel1').remove(f2, f3);
+						     expect(radio._.channels.channel1.length).toBe(0);
 					});
 					it("should remove listeners add with context from channel", function() {
 						 radio('channel1').add([test.selfTest, test], f);
@@ -117,14 +127,18 @@ describe("Radio Core Test", function() {
 						 radio('channel1').remove(test.selfTest);
 						 expect(radio._.channels.channel1.length).toBe(1);
 					});
+					it("should not throw an error if remove an item that doesn't exists", function() {
+								 radio('newChannel').remove(f2);
+					});
 					it("should be chainable", function() {
 							 radio('channel1').add(f, f2, f3).remove(f2);
 							 expect(radio._.channels.channel1.length).toBe(2);
 					});
+					
 	  });
 
   	describe("radio.broadcast method", function() {
-					it("should call each listener only once", function() {
+					it("should call each listener - test 1", function() {
 						spyOn(test, 'add');
 						spyOn(test, 'selfTest');
 						radio('channel1').add([test.selfTest, test], [test.add, test]);
@@ -137,6 +151,18 @@ describe("Radio Core Test", function() {
 						//reset methods
 						test.selfTest.reset();
 						test.add.reset();
+					});
+					it("should call each listener - test 2", function() {
+							spyOn(window, 'f');
+							spyOn(window, 'f2');
+						    spyOn(window, 'f3');
+							radio('channel1').add(f, f, f, f, f2, f2, f3).broadcast('test');
+							expect(window.f.callCount).toBe(4);
+							expect(window.f2.callCount).toBe(2);
+							expect(window.f3.callCount).toBe(1);	
+							window.f.reset();
+							window.f2.reset();
+							window.f3.reset();	
 					});
 					it("should pass it's broadcast arguments to the listener", function() {
 							spyOn(test, 'add');
@@ -163,10 +189,30 @@ describe("Radio Core Test", function() {
 								//add the scopeTest method.  Scope test sets the context 'test' as this and calls the add method
 								radio('channel1').add(f).broadcast('test');
 								expect(window.f.callCount).toBe(1);
+								window.f.reset();
 					});
 					
 	  });
 	
+	
+ 	 describe("radio add remove and broadcast methods ", function() {
+					it("should work all together in a chain", function() {
+						//test 1
+						 radio('channel1').add(f, f2, f3).remove(f);
+						 expect(radio._.channels.channel1.length).toBe(2);
+						
+						//test2
+						 spyOn(window, 'f');
+						 spyOn(window, 'f2');
+						 spyOn(window, 'f3');
+						 radio('channel2').add(f, f, f, f, f2).remove(f, f2).add(f3).broadcast('test');
+						 expect(window.f2.callCount).toBe(0);
+						 expect(window.f3.callCount).toBe(1);
+						 window.f.reset();
+						 window.f2.reset();
+						 window.f3.reset();
+					});
+	  });
 
 	
 	afterEach(function() {

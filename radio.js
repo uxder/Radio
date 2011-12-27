@@ -36,6 +36,7 @@
 					//if user sent it without a context, set the context to the function
 					context = (listener[1]) ? listener[1] : window;
 				}
+
 				//run the listener
 				callback.apply(context, arguments);
 			}
@@ -93,7 +94,7 @@
 		/**
 		 * Remove Listener from channel (subscribe)
 		 * Take the arguments and add it to the this.channels array.
-		 * @param[callback|array] callback list of callbacks separated by commas
+		 * @param[function] callback list of callbacks to be removed separated by commas
 		 * @return [this] this returns self for chaining
 		 * @example
 		 *		//basic usage		
@@ -105,22 +106,27 @@
 		 */
 		remove: function() {
 			var a = arguments,
-				i, j, c = this.channels[this.channelName],
+				i, j, 
+				c = this.channels[this.channelName],
 				l = a.length,
 				cl = c.length,
 				offset = 0,
 				jo;
 			//loop through each argument 
-			for (i = 0; i < l; i++) {
+			for (i = l; i--;) {
+				//reset variables that change as the channel array items are removed
 				offset = 0;
+				cl = c.length;
 				//loop through the channel
 				for (j = 0; j < cl; j++) {
 					jo = j - offset;
 					//if there is a match with the argument and the channel function remove it from the channel array
 					if (c[jo][0] === a[i]) {
-						c.splice(jo, 1);
+						//remove this item from the channel array
+						c.splice(jo, 1); 
 						offset++;
 					}
+
 				}
 			}
 			return this;
