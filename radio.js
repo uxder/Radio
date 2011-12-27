@@ -49,11 +49,16 @@
 		},
 		
 		/**
-		 * Set the current channel/event name
+		 * Create the channel if it doesn't exist and set the current channel/event name
 		 * @param[string] name the name of the channel
 		 * @return[this] returns self for chaining
+		 * @example
+		 * 		radio('channel1');
  		 */
 		channel: function(name) {
+			var c = this.channels;
+			//create a new channel if it doesn't exists
+			if(!(c[name])) c[name] = [];		
 			this.channelName = name;
 			return this;
 		},
@@ -65,7 +70,9 @@
 		 * @return [this] this returns self for chaining
 		 * @example
 		 *		//basic usage		
+		 *      var callback = function() {};
 		 *		radio('channel1').add(callback); //will run callback on 
+		 *
 		 *		radio('channel1').add(callback, callback2, callback3 ...); //you can add an endless amount of callbacks
 		 * 	    
 		 *		//adding callbacks with context
@@ -78,11 +85,13 @@
 					i, 
 					l= a.length,
 					channel;
+					
 				//grab the current channel or create and save a new one as an array
-				channel = c[cn] || (c[cn] = []);
+				//channel = c[cn] || (c[cn] = []);
+				
 				//run through each arguments and add it to the channel
 				for(i=0; i<l;i++) {
-					channel.push(a[i]);
+					c[cn].push(a[i]);
 				}
 				return this;
 		},
@@ -121,6 +130,7 @@
 			
 			//is this an expensive way to match and can?  perhaps use another method like .search in array.
 			for(i=0; i<l;i++) {
+				//potential bug.  I think we need to check for array and function because the argument passed is just the name of the callback
 				if(c[i] === func) c.splice(i,1);
 			}
 		},

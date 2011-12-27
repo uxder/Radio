@@ -89,6 +89,18 @@ describe("Radio Core Test", function() {
 					it("should call each listener only once", function() {
 					
 					});
+					it("should not fail even if the channel has never been created", function() {
+					
+					});
+	  });
+	
+	describe("radio.channel method", function() {
+					it("should create a new channel if it doesn't exists", function() {
+
+					});
+					it("should set the internal radio channel name", function() {
+
+					});
 	  });
 	
 	afterEach(function() {
