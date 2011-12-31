@@ -13,7 +13,7 @@
 		/**
 		 * Broadcast (publish)
 		 * Based on the current channelname set by the user, iterate through all listeners and send messages
-		 * Messages are the arguments of the message can send unlimited parameters
+		 * @param arguments of the message can send unlimited parameters
 		 * @return [this] this returns self for chaining
 		 * @example
 		 * 	  basic usage 
@@ -133,6 +133,7 @@
 
 	/**
 	 * Main Wrapper for radio._ and create a function radio to accept the channelName
+	 * @param[string] channelName topic of event 
 	 */
 	function radio(channelName) {
 		radio._.channel(channelName);
