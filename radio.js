@@ -1,6 +1,6 @@
 /**
- radio.js - Chainable, Dependency Free Publish/Subscribe for Javascript
-
+ Radio.js - Chainable, Dependency Free Publish/Subscribe for Javascript
+ http://radio.uxder.com
  Author: Scott Murphy 2011
  twitter: @hellocreation, github: uxder
 
@@ -25,8 +25,6 @@
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  */
-
-
 (function (global) {
     "use strict";
 
@@ -54,18 +52,19 @@
          *    radio('channel2').broadcast(param1, param2, param3 ... );
          */
         broadcast:function () {
-            var i, c = this.channels[this.channelName],
+            var i, 
+				c = this.channels[this.channelName],
                 l = c.length,
                 subscriber,
                 callback,
                 context;
-            //iterate through this channel and run each subscriber
+            //iterate through current channel and run each subscriber
             for (i = 0; i < l; i++) {
                 subscriber = c[i];
-                //if listener was an array, set the callback and context.
+                //if subscriber was an array, set the callback and context.
                 if ((typeof(subscriber) === 'object') && (subscriber.length)) {
                     callback = subscriber[0];
-                    //if user sent it without a context, set the context to the function
+                    //if user set the context, set it to the context otherwise, it is a globally scoped function
                     context = subscriber[1] || global;
                 }
                 callback.apply(context, arguments);
@@ -115,7 +114,7 @@
             //run through each arguments and add it to the channel
             for (i = 0; i < l; i++) {
                 ai = a[i];
-                //if the user send just a function, wrap the fucntion in an array [function]
+                //if the user sent just a function, wrap the fucntion in an array [function]
                 p = (typeof(ai) === "function") ? [ai] : ai;
                 if ((typeof(p) === 'object') && (p.length)) c.push(p);
             }
@@ -124,7 +123,7 @@
 
         /**
          * Remove subscriber from channel
-         * Take arguments and add it to the this.channels array.
+         * Take arguments with functions and remove it if there is a match against existing subscribers.
          * @param {Function} arguments callbacks separated by commas
          * @example
          *      //basic usage
@@ -145,19 +144,18 @@
                 jo;
             //loop through each argument
             for (i = 0; i < l; i++) {
-                //reset vars that change as the channel array items are removed
+                //need to reset vars that change as the channel array items are removed
                 offset = 0;
                 cl = c.length;
                 //loop through the channel
                 for (j = 0; j < cl; j++) {
                     jo = j - offset;
-                    //if there is a match with the argument and the channel function remove it from the channel array
+                    //if there is a match with the argument and the channel function, remove it from the channel array
                     if (c[jo][0] === a[i]) {
                         //remove matched item from the channel array
                         c.splice(jo, 1);
                         offset++;
                     }
-
                 }
             }
             return this;
