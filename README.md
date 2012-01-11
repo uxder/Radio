@@ -5,7 +5,9 @@ Documentation and Information: http://radio.uxder.com
 
 Author: Scott Murphy 2011
 
-twitter: @hellocreation, github: uxder
+twitter: @hellocreation
+
+github: uxder
 
 
 
