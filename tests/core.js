@@ -28,36 +28,36 @@ describe("Radio Core Test", function() {
 		    });
 	
 			it("should return a version number", function() {
-				 expect(radio._.version).toBeDefined();
+				 expect(radio.$.version).toBeDefined();
 			});
 	  });
 	
 	 describe("radio() method", function() {
 		    it("should set the channel name", function() {
 				radio('channel1');
-			  	expect(radio._.channelName).toBe('channel1');
+			  	expect(radio.$.channelName).toBe('channel1');
 		    });
 			it("requires a string", function() {
 				radio('channel1');
-			  	expect(radio._.channelName).toBe('channel1');
+			  	expect(radio.$.channelName).toBe('channel1');
 		    });
 	  });
 
 	 describe("radio.channel method", function() {
 		 	it("should set the channel name", function() {
 				radio('test').channel('channel1');
-			  	expect(radio._.channelName).toBe('channel1');
+			  	expect(radio.$.channelName).toBe('channel1');
 		    });
 		    it("should make multiple channels chainable", function() {
 				radio('channel1').add(f,f).channel('channel2').add(f);
-			  	expect(radio._.channelName).toBe('channel2');
-				expect(radio._.channels.channel1.length).toBe(2);
-				expect(radio._.channels.channel2.length).toBe(1);
+			  	expect(radio.$.channelName).toBe('channel2');
+				expect(radio.$.channels.channel1.length).toBe(2);
+				expect(radio.$.channels.channel2.length).toBe(1);
 		    });
 			it("should create a new channel if it doesn't exists", function() {
-				expect(radio._.channels['test']).not.toBeDefined();
+				expect(radio.$.channels['test']).not.toBeDefined();
 				radio('test');
-				expect(radio._.channels['test']).toBeDefined();
+				expect(radio.$.channels['test']).toBeDefined();
 			});
 
 	  });
@@ -66,73 +66,73 @@ describe("Radio Core Test", function() {
  	describe("radio.add method", function() {
 					it("should register a single listener to a channel", function() {
 						 var test = radio('channel1').add(f);
-						 expect(radio._.channels.channel1.length).toBe(1);
+						 expect(radio.$.channels.channel1.length).toBe(1);
 					});
 					it("should add multiple listeners to a channel", function() {
 						 radio('channel1').add(f,f,f);
-						 expect(radio._.channels.channel1.length).toBe(3);
+						 expect(radio.$.channels.channel1.length).toBe(3);
 					});
 					it("should suppport adding listerners with setting the context of 'this'", function() {
 							 radio('channel1').add([test.selfTest, test]);
-							 expect(radio._.channels.channel1.length).toBe(1);
+							 expect(radio.$.channels.channel1.length).toBe(1);
 					});
 					it("should support a combination of adding functions in different ways", function() {
 								 radio('channel1').add(f,[test.selfTest, test], f2);
-								 expect(radio._.channels.channel1.length).toBe(3);
+								 expect(radio.$.channels.channel1.length).toBe(3);
 					});
 					it("should not allow a non-function or array to be added", function() {
 									 radio('channel1').add("string", f);
-									 expect(radio._.channels.channel1.length).toBe(1);
+									 expect(radio.$.channels.channel1.length).toBe(1);
 									 radio('channel1').add(2, f);
-									 expect(radio._.channels.channel1.length).toBe(2);
+									 expect(radio.$.channels.channel1.length).toBe(2);
 					});
 					it("should be chainable", function() {
 						 radio('channel1').add(f).add(f2);
-						 expect(radio._.channels.channel1.length).toBe(2);
+						 expect(radio.$.channels.channel1.length).toBe(2);
 					});
 	  });
 
   	describe("radio.remove method", function() {
 					it("should remove a listener from a channel", function() {
 						 radio('channel1').add(f);
-						 expect(radio._.channels.channel1.length).toBe(1);
+						 expect(radio.$.channels.channel1.length).toBe(1);
 						 radio('channel1').remove(f);
-						 expect(radio._.channels.channel1.length).toBe(0);
+						 expect(radio.$.channels.channel1.length).toBe(0);
 					});
 					it("should remove multiple listeners from a channel", function() {
 						 radio('channel1').add(f,f2,f3);
-						 expect(radio._.channels.channel1.length).toBe(3);
+						 expect(radio.$.channels.channel1.length).toBe(3);
 						 radio('channel1').remove(f);
-						 expect(radio._.channels.channel1.length).toBe(2);
+						 expect(radio.$.channels.channel1.length).toBe(2);
 					});
 					it("should remove duplicate listeners from a channel", function() {
 							//check 1
 							 radio('channel1').add(f,f,f);
-							 expect(radio._.channels.channel1.length).toBe(3);
+							 expect(radio.$.channels.channel1.length).toBe(3);
 							 radio('channel1').remove(f);
-							 expect(radio._.channels.channel1.length).toBe(0);
+							 expect(radio.$.channels.channel1.length).toBe(0);
 							//check2 
 							 radio('channel1').add(f,f,f, f2, f3, [test.selfTest, test], test.selfTest);
-							 expect(radio._.channels.channel1.length).toBe(7);
+							 expect(radio.$.channels.channel1.length).toBe(7);
 							 radio('channel1').remove(f);
-							 expect(radio._.channels.channel1.length).toBe(4);
+							 expect(radio.$.channels.channel1.length).toBe(4);
 							 radio('channel1').remove(test.selfTest);
-							 expect(radio._.channels.channel1.length).toBe(2);
+							 expect(radio.$.channels.channel1.length).toBe(2);
 							 radio('channel1').remove(f2, f3);
-						     expect(radio._.channels.channel1.length).toBe(0);
+						     expect(radio.$.channels.channel1.length).toBe(0);
 					});
 					it("should remove listeners add with context from channel", function() {
 						 radio('channel1').add([test.selfTest, test], f);
-						 expect(radio._.channels.channel1.length).toBe(2);
+						 expect(radio.$.channels.channel1.length).toBe(2);
 						 radio('channel1').remove(test.selfTest);
-						 expect(radio._.channels.channel1.length).toBe(1);
+						 expect(radio.$.channels.channel1.length).toBe(1);
 					});
 					it("should not throw an error if remove an item that doesn't exists", function() {
 								 radio('newChannel').remove(f2);
 					});
 					it("should be chainable", function() {
 							 radio('channel1').add(f, f2, f3).remove(f2);
-							 expect(radio._.channels.channel1.length).toBe(2);
+							 expect(radio.$.channels.channel1.length).toBe(2);
 					});
 					
 	  });
@@ -142,7 +142,7 @@ describe("Radio Core Test", function() {
 						spyOn(test, 'add');
 						spyOn(test, 'selfTest');
 						radio('channel1').add([test.selfTest, test], [test.add, test]);
-						expect(radio._.channels.channel1.length).toBe(2);
+						expect(radio.$.channels.channel1.length).toBe(2);
 						radio('channel1').broadcast('test');
 						expect(test.selfTest).toHaveBeenCalled();
 						expect(test.add).toHaveBeenCalled();
@@ -199,7 +199,7 @@ describe("Radio Core Test", function() {
 					it("should work all together in a chain", function() {
 						//test 1
 						 radio('channel1').add(f, f2, f3).remove(f);
-						 expect(radio._.channels.channel1.length).toBe(2);
+						 expect(radio.$.channels.channel1.length).toBe(2);
 						
 						//test2
 						 spyOn(window, 'f');
@@ -217,7 +217,7 @@ describe("Radio Core Test", function() {
 	
 	afterEach(function() {
 		//clear out the channels.
-		radio._.channels = [];
+		radio.$.channels = [];
 	});
 });
 
