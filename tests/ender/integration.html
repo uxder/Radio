@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+  <title>Ender Integration Tests</title>
+  <script src="ender.js"></script>
+  <style type="text/css">
+    body { font-family: 'helvetica neue', helvetica, arial; font-size: 11pt; }
+    p { margin: 5px; }
+    .fail { color: red; }
+    .pass { color: green; }
+  </style>
+</head>
+<body>
+
+<script type="text/javascript">
+  var res, fn, ctx;
+
+  function result (success, msg) {
+    var r = document.createElement('p'),
+      s = success ? 'Pass' : 'Fail';
+    r.innerHTML = '<b>' + s + '</b>: ' + msg;
+    r.className = s.toLowerCase();
+    document.body.appendChild(r);
+  }
+
+  res = false;
+  $.subscribe('test1', function() { res = true; });
+  $.broadcast('test1');
+  result(res, 'simple subscribe &amp; broadcast');
+
+  res = false;
+  $.subscribe('test2', function(data) { res = data === 101; });
+  $.broadcast('test2', 101);
+  result(res, 'single argument subscribe &amp; broadcast');
+
+  res = false;
+  $.subscribe('test3', function() { res = arguments[0] === 101 && arguments[1] === 202 && arguments[2] === 303; });
+  $.broadcast('test3', 101, 202, 303);
+  result(res, 'multi argument subscribe &amp; broadcast');
+
+  res = 0;
+  fn = function() { res++; };
+  $.subscribe('test4', fn)
+  $.broadcast('test4');
+  $.broadcast('test4');
+  $.unsubscribe('test4', fn)
+  $.broadcast('test4');
+  result(res === 2, 'subscribe, multi-broadcast &amp; unsubscribe');
+
+  res = false;
+  ctx = {};
+  $.subscribe('test5', [ function() { res = this === ctx; }, ctx ]);
+  $.broadcast('test5');
+  result(res, 'subscribe &amp; broadcast with context');
+
+  res = 0;
+  $.subscribe('test6', function() { res++ });
+  $.subscribe('test6', function() { res++ });
+  $.broadcast('test6');
+  result(res === 2, 'multiple subscribers');
+
+  res = 0;
+  $.subscribe('test7', function() { res++ }, function() { res++ });
+  $.broadcast('test7');
+  result(res === 2, 'multi-argument subscribe');
+
+  res = 0;
+  fn = function() { res++; };
+  $.subscribe('test8', fn).broadcast('test8').broadcast('test8').remove('test8', fn).broadcast('test8');
+  result(res === 2, 'chained subscribe, multi-broadcast &amp; unsubscribe');
+
+</script>
+</body>
+</html>

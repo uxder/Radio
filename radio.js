@@ -25,7 +25,12 @@
  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  OTHER DEALINGS IN THE SOFTWARE.
  */
-(function(global) {
+(function (name, global, definition) {
+	if (typeof module !== 'undefined') module.exports = definition(name, global);
+	else if (typeof define === 'function' && typeof define.amd  === 'object') define(definition);
+	else global[name] = definition(name, global);
+})('radio', this, function (name, global) {
+
 	"use strict";
 
 	/**
@@ -156,6 +161,5 @@
 		}
 	};
 
-	//add radio to window object
-	global.radio = global.radio || radio;
-})(window);
+	return radio;
+});
