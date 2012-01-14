@@ -43,7 +43,7 @@
 	}
 
 	radio.$ = {
-		version: '0.1.1',
+		version: '0.1.11',
 		channelName: "",
 		channels: [],
 		/**
