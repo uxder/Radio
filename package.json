@@ -1,7 +1,7 @@
 {
   "name": "radio",
   "description": "A small dependency-free publish/subscribe javascript library",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "http://radio.uxder.com/",
   "author": "Scott Murphy, @hellocreation",
   "keywords": [ "pubsub", "events", "ender" ],
