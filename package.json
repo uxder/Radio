@@ -1,0 +1,14 @@
+{
+  "name": "radio",
+  "description": "A small dependency-free publish/subscribe javascript library",
+  "version": "0.1.0",
+  "homepage": "http://radio.uxder.com/",
+  "author": "Scott Murphy, @hellocreation",
+  "keywords": [ "pubsub", "events", "ender" ],
+  "main": "./radio.js",
+  "ender": "./ender.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uxder/Radio.git"
+  }
+}
