@@ -24,49 +24,49 @@
   }
 
   res = false;
-  $.subscribe('test1', function() { res = true; });
-  $.broadcast('test1');
+  $.radio('test1').subscribe(function() { res = true; });
+  $.radio('test1').broadcast();
   result(res, 'simple subscribe &amp; broadcast');
 
   res = false;
-  $.subscribe('test2', function(data) { res = data === 101; });
-  $.broadcast('test2', 101);
+  $.radio('test2').subscribe(function(data) { res = data === 101; });
+  $.radio('test2').broadcast(101);
   result(res, 'single argument subscribe &amp; broadcast');
 
   res = false;
-  $.subscribe('test3', function() { res = arguments[0] === 101 && arguments[1] === 202 && arguments[2] === 303; });
-  $.broadcast('test3', 101, 202, 303);
+  $.radio('test3').subscribe(function() { res = arguments[0] === 101 && arguments[1] === 202 && arguments[2] === 303; });
+  $.radio('test3').broadcast(101, 202, 303);
   result(res, 'multi argument subscribe &amp; broadcast');
 
   res = 0;
   fn = function() { res++; };
-  $.subscribe('test4', fn)
-  $.broadcast('test4');
-  $.broadcast('test4');
-  $.unsubscribe('test4', fn)
-  $.broadcast('test4');
+  $.radio('test4').subscribe(fn)
+  $.radio('test4').broadcast();
+  $.radio('test4').broadcast();
+  $.radio('test4').unsubscribe(fn)
+  $.radio('test4').broadcast();
   result(res === 2, 'subscribe, multi-broadcast &amp; unsubscribe');
 
   res = false;
   ctx = {};
-  $.subscribe('test5', [ function() { res = this === ctx; }, ctx ]);
-  $.broadcast('test5');
+  $.radio('test5').subscribe([ function() { res = this === ctx; }, ctx ]);
+  $.radio('test5').broadcast();
   result(res, 'subscribe &amp; broadcast with context');
 
   res = 0;
-  $.subscribe('test6', function() { res++ });
-  $.subscribe('test6', function() { res++ });
-  $.broadcast('test6');
+  $.radio('test6').subscribe(function() { res++ });
+  $.radio('test6').subscribe(function() { res++ });
+  $.radio('test6').broadcast();
   result(res === 2, 'multiple subscribers');
 
   res = 0;
-  $.subscribe('test7', function() { res++ }, function() { res++ });
-  $.broadcast('test7');
+  $.radio('test7').subscribe(function() { res++ }, function() { res++ });
+  $.radio('test7').broadcast();
   result(res === 2, 'multi-argument subscribe');
 
   res = 0;
   fn = function() { res++; };
-  $.subscribe('test8', fn).broadcast('test8').broadcast('test8').remove('test8', fn).broadcast('test8');
+  $.radio('test8').subscribe(fn).broadcast().broadcast().unsubscribe(fn).broadcast();
   result(res === 2, 'chained subscribe, multi-broadcast &amp; unsubscribe');
 
 </script>
