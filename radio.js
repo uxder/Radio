@@ -43,7 +43,7 @@
 	}
 
 	radio.$ = {
-		version: '0.1.11',
+		version: '0.2',
 		channelName: "",
 		channels: [],
 		/**
@@ -95,24 +95,24 @@
 		 * @example
 		 *      //basic usage
 		 *      var callback = function() {};
-		 *      radio('channel1').add(callback); 
+		 *      radio('channel1').subscribe(callback); 
 		 *
-		 *      //add an endless amount of callbacks
-		 *      radio('channel1').add(callback, callback2, callback3 ...);
+		 *      //subscribe an endless amount of callbacks
+		 *      radio('channel1').subscribe(callback, callback2, callback3 ...);
 		 *
 		 *      //adding callbacks with context
-		 *      radio('channel1').add([callback, context],[callback1, context], callback3);
+		 *      radio('channel1').subscribe([callback, context],[callback1, context], callback3);
 		 *     
-		 *      //add by chaining
-		 *      radio('channel1').add(callback).radio('channel2').add(callback).add(callback2);
+		 *      //subscribe by chaining
+		 *      radio('channel1').subscribe(callback).radio('channel2').subscribe(callback).subscribe(callback2);
 		 */
-		add: function() {
+		subscribe: function() {
 			var a = arguments,
 				c = this.channels[this.channelName],
 				i, l = a.length,
 				p, ai = [];
 
-			//run through each arguments and add it to the channel
+			//run through each arguments and subscribe it to the channel
 			for (i = 0; i < l; i++) {
 				ai = a[i];
 				//if the user sent just a function, wrap the fucntion in an array [function]
@@ -124,17 +124,17 @@
 
 		/**
 		 * Remove subscriber from channel
-		 * Take arguments with functions and remove it if there is a match against existing subscribers.
+		 * Take arguments with functions and unsubscribe it if there is a match against existing subscribers.
 		 * @param {Function} arguments callbacks separated by commas
 		 * @example
 		 *      //basic usage
-		 *      radio('channel1').remove(callback); 
-		 *      //you can remove as many callbacks as you want
-		 *      radio('channel1').remove(callback, callback2, callback3 ...);
+		 *      radio('channel1').unsubscribe(callback); 
+		 *      //you can unsubscribe as many callbacks as you want
+		 *      radio('channel1').unsubscribe(callback, callback2, callback3 ...);
 		 *       //removing callbacks with context is the same
-		 *      radio('channel1').add([callback, context]).remove(callback);
+		 *      radio('channel1').subscribe([callback, context]).unsubscribe(callback);
 		 */
-		remove: function() {
+		unsubscribe: function() {
 			var a = arguments,
 				i, j, c = this.channels[this.channelName],
 				l = a.length,
@@ -149,9 +149,9 @@
 				//loop through the channel
 				for (j = 0; j < cl; j++) {
 					jo = j - offset;
-					//if there is a match with the argument and the channel function, remove it from the channel array
+					//if there is a match with the argument and the channel function, unsubscribe it from the channel array
 					if (c[jo][0] === a[i]) {
-						//remove matched item from the channel array
+						//unsubscribe matched item from the channel array
 						c.splice(jo, 1);
 						offset++;
 					}
