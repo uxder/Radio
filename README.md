@@ -3,7 +3,7 @@ Radio.js - Chainable, Dependency Free Publish/Subscribe for Javascript
 
 Documentation and Information: http://radio.uxder.com 
 
-Author: Scott Murphy 2011
+Author: Scott Murphy 2012
 
 twitter: @hellocreation
 
