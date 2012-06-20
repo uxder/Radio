@@ -47,6 +47,15 @@
     channelName: "",
     channels: [],
     /**
+     * Reset global state, by removing all channels
+     * @example
+     *    radio()
+     */
+    reset: function() {
+      radio.$.channelName = "";
+      radio.$.channels = [];
+    },
+    /**
      * Broadcast (publish)
      * Iterate through all listeners (callbacks) in current channel and pass arguments to subscribers
      * @param arguments data to be sent to listeners
@@ -56,10 +65,6 @@
      *    //send an unlimited number of parameters
      *    radio('channel2').broadcast(param1, param2, param3 ... );
      */
-    reset: function() {
-      radio.$.channelName = "";
-      radio.$.channels = [];
-    },
     broadcast: function() {
       var i, c = this.channels[this.channelName],
         l = c.length,
