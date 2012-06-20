@@ -46,6 +46,7 @@
     version: '0.2',
     channelName: "",
     channels: [],
+
     /**
      * Reset global state, by removing all channels
      * @example
@@ -55,6 +56,7 @@
       radio.$.channelName = "";
       radio.$.channels = [];
     },
+ 
     /**
      * Broadcast (publish)
      * Iterate through all listeners (callbacks) in current channel and pass arguments to subscribers
