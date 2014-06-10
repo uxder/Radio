@@ -26,8 +26,8 @@
  OTHER DEALINGS IN THE SOFTWARE.
  */
 (function (name, global, definition) {
-  if (typeof module !== 'undefined') module.exports = definition(name, global);
-  else if (typeof define === 'function' && typeof define.amd  === 'object') define(definition);
+  if (typeof define === 'function' && typeof define.amd  === 'object') define(definition);
+  else if (typeof 'exports' !== 'undefined' && typeof module !== 'undefined') module.exports = definition(name, global);
   else global[name] = definition(name, global);
 })('radio', this, function (name, global) {
 
