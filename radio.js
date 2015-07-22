@@ -68,7 +68,8 @@
      *    radio('channel2').broadcast(param1, param2, param3 ... );
      */
     broadcast: function() {
-      var i, c = this.channels[this.channelName],
+      // use slice() so as to loop on a copy of channels list as it might be changed while looping
+      var i, c = this.channels[this.channelName].slice(),
         l = c.length,
         subscriber, callback, context;
       //iterate through current channel and run each subscriber

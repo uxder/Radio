@@ -164,6 +164,20 @@ describe("Radio Core Test", function() {
 							window.f2.reset();
 							window.f3.reset();	
 					});
+					it("should call each listener - test 3", function() {
+							spyOn(window, 'f').andCallFake(function() {
+								radio('channel1').unsubscribe(f);
+							});
+							spyOn(window, 'f2');
+						    spyOn(window, 'f3');
+							radio('channel1').subscribe(f, f2, f3).broadcast('test');
+							expect(window.f.callCount).toBe(1);
+							expect(window.f2.callCount).toBe(1);
+							expect(window.f3.callCount).toBe(1);	
+							window.f.reset();
+							window.f2.reset();
+							window.f3.reset();	
+					});
 					it("should pass it's broadcast arguments to the listener", function() {
 							spyOn(test, 'subscribe');
 							spyOn(test, 'selfTest');
